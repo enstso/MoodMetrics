@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: moodmetrics
+      MYSQL_USER: moodmetrics
+      MYSQL_PASSWORD: moodmetrics
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: .
+    environment: &app-environment
+      DATABASE_URL: mysql+pymysql://moodmetrics:moodmetrics@db:3306/moodmetrics
+      MODEL_PATH: /app/artifacts/sentiment_model.joblib
+    ports:
+      - "8000:8000"
+    volumes:
+      - model_data:/app/artifacts
+    depends_on:
+      db:
+        condition: service_healthy
+
+  trainer:
+    build: .
+    command: trainer
+    environment: *app-environment
+    volumes:
+      - model_data:/app/artifacts
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+  model_data:

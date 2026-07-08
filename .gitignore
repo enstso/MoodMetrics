@@ -1,5 +1,6 @@
 __pycache__/
 *.py[cod]
+*.egg-info/
 .env
 .venv/
 .pytest_cache/
@@ -8,4 +9,3 @@ htmlcov/
 artifacts/*.joblib
 reports/*.png
 tmp/
-
