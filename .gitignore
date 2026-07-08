@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+artifacts/*.joblib
+reports/*.png
+tmp/
+

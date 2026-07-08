@@ -1,0 +1,2 @@
+"""MoodMetrics application package."""
+
