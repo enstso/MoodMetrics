@@ -95,9 +95,7 @@ python -m scripts.evaluate_model    # calcule les métriques -> reports/evaluati
 python -m scripts.generate_report   # construit le PDF -> reports/rapport_evaluation.pdf
 ```
 
-> Le PDF est écrit à l'emplacement `REPORT_PATH` (par défaut `reports/evaluation_report.pdf`).
-> Pour obtenir directement `reports/rapport_evaluation.pdf`, exécuter :
-> `REPORT_PATH=reports/rapport_evaluation.pdf python -m scripts.generate_report`.
+> Le PDF est écrit à l'emplacement `REPORT_PATH` (par défaut `reports/rapport_evaluation.pdf`).
 
 **Méthodologie.** Les tweets sont chargés depuis la table `tweets`, **dédupliqués par texte**
 (pour éviter qu'un même tweet se retrouve à la fois en entraînement et en test — fuite de données),

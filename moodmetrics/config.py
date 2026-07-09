@@ -14,4 +14,4 @@ class Config:
     )
     EVALUATION_PATH = os.getenv("EVALUATION_PATH", "reports/evaluation.json")
     MODEL_PATH = os.getenv("MODEL_PATH", "artifacts/sentiment_model.joblib")
-    REPORT_PATH = os.getenv("REPORT_PATH", "reports/evaluation_report.pdf")
+    REPORT_PATH = os.getenv("REPORT_PATH", "reports/rapport_evaluation.pdf")

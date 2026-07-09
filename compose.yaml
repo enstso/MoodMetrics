@@ -24,7 +24,7 @@ services:
       DATASET_PATH: /app/data/tweets.csv
       EVALUATION_PATH: /app/reports/evaluation.json
       MODEL_PATH: /app/artifacts/sentiment_model.joblib
-      REPORT_PATH: /app/reports/evaluation_report.pdf
+      REPORT_PATH: /app/reports/rapport_evaluation.pdf
     ports:
       - "8000:8000"
     volumes:
