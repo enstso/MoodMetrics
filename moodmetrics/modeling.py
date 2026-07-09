@@ -22,6 +22,7 @@ class ModelSpec:
 
 
 BASELINE_MODEL_NAME = "baseline_word_tfidf_logreg"
+TUNED_WORD_MODEL_NAME = "tuned_word_tfidf_logreg"
 OPTIMAL_MODEL_NAME = BASELINE_MODEL_NAME
 
 
@@ -32,13 +33,41 @@ def build_baseline_word_tfidf_logreg() -> Pipeline:
     )
 
 
+def build_tuned_word_tfidf_logreg() -> Pipeline:
+    return make_pipeline(
+        TfidfVectorizer(
+            ngram_range=(1, 3),
+            min_df=1,
+            max_df=0.95,
+            strip_accents="unicode",
+            sublinear_tf=True,
+            max_features=30_000,
+        ),
+        LogisticRegression(
+            max_iter=2_000,
+            class_weight="balanced",
+            C=1.5,
+            solver="liblinear",
+        ),
+    )
+
+
 MODEL_SPECS: dict[str, ModelSpec] = {
     BASELINE_MODEL_NAME: ModelSpec(
         name=BASELINE_MODEL_NAME,
         description="Baseline TF-IDF mots 1-2 grammes + LogisticRegression.",
         attempt="baseline",
         build=build_baseline_word_tfidf_logreg,
-    )
+    ),
+    TUNED_WORD_MODEL_NAME: ModelSpec(
+        name=TUNED_WORD_MODEL_NAME,
+        description=(
+            "Tentative 1: TF-IDF mots 1-3 grammes, accents normalisés, "
+            "pondération sublinear_tf et C=1.5."
+        ),
+        attempt="tentative_1_tfidf",
+        build=build_tuned_word_tfidf_logreg,
+    ),
 }
 
 
