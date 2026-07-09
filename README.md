@@ -95,6 +95,36 @@ python -m scripts.import_dataset
 python -m scripts.train_model
 ```
 
+## Optimisation de l'algorithme
+
+Une étape de benchmark compare plusieurs pipelines sur les mêmes données, avec un split stratifié
+80/20 (`random_state=42`) et un score principal basé sur la moyenne des F1-scores des deux
+classifieurs (`positive` et `negative`).
+
+```bash
+python -m scripts.optimize_model
+```
+
+Tentatives mesurées dans `reports/optimization_results.json` :
+
+| Rang | Pipeline | F1 moyen | Accuracy moyenne | Temps d'entraînement |
+| --- | --- | ---: | ---: | ---: |
+| 1 | `hybrid_char_word_tfidf_logreg` | 0.9704 | 0.9767 | 0.3822s |
+| 2 | `baseline_word_tfidf_logreg` | 0.9703 | 0.9767 | 0.0726s |
+| 3 | `tuned_word_tfidf_logreg` | 0.9672 | 0.9743 | 0.0892s |
+
+**Solution retenue.** La version la plus optimisée est
+`hybrid_char_word_tfidf_logreg`, définie dans `moodmetrics/modeling.py`. Elle combine :
+
+- un TF-IDF de mots en 1-2 grammes pour capturer les expressions courtes ;
+- un TF-IDF de caractères `char_wb` en 3-5 grammes pour mieux gérer fautes, hashtags, emojis,
+  accents et variations typiques des tweets ;
+- une `LogisticRegression` pondérée (`class_weight="balanced"`, `C=2.0`, `solver="liblinear"`).
+
+Ce modèle devient le pipeline par défaut utilisé par `scripts.train_model` et
+`scripts.evaluate_model`. Le gain est faible mais mesurable sur le F1 moyen, et le coût reste
+acceptable pour le volume du projet.
+
 ## Évaluation du modèle et rapport
 
 Le module d'évaluation mesure la qualité des deux classifieurs et produit un **rapport PDF en
@@ -121,6 +151,7 @@ d'évaluation (chemin configurable via `SUPPLEMENTARY_DATASET_PATH`).
 **Artefacts produits dans `reports/`** :
 
 - `evaluation.json` — toutes les métriques calculées ;
+- `optimization_results.json` — comparaison des pipelines testés ;
 - `confusion_matrix_positive.png` / `confusion_matrix_negative.png` — les matrices de confusion ;
 - `rapport_evaluation.pdf` — le rapport d'évaluation (introduction, matrices interprétées,
   tableau des mesures, analyse des forces/faiblesses/biais, recommandations).

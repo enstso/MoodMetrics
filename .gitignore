@@ -14,6 +14,7 @@ tmp/
 
 # Livrables d'évaluation à versionner (exception aux règles reports/* ci-dessus)
 !reports/evaluation.json
+!reports/optimization_results.json
 !reports/rapport_evaluation.pdf
 !reports/confusion_matrix_positive.png
 !reports/confusion_matrix_negative.png

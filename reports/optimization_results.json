@@ -1,0 +1,123 @@
+{
+  "samples": 1066,
+  "test_size": 0.2,
+  "random_state": 42,
+  "dataset": {
+    "database_rows": 1000,
+    "database_unique": 1000,
+    "duplicates_removed": 0,
+    "supplement_added": 66
+  },
+  "best_model": {
+    "name": "hybrid_char_word_tfidf_logreg",
+    "description": "Tentative 2: union TF-IDF mots + char_wb 3-5 grammes pour mieux capturer fautes, hashtags, emojis et variations courtes.",
+    "attempt": "tentative_2_hybrid_features"
+  },
+  "attempts": [
+    {
+      "model": {
+        "name": "hybrid_char_word_tfidf_logreg",
+        "description": "Tentative 2: union TF-IDF mots + char_wb 3-5 grammes pour mieux capturer fautes, hashtags, emojis et variations courtes.",
+        "attempt": "tentative_2_hybrid_features"
+      },
+      "aggregate": {
+        "accuracy": 0.9767,
+        "f1_score": 0.9704,
+        "fit_time_seconds": 0.3822,
+        "predict_time_seconds": 0.092
+      },
+      "labels": {
+        "positive": {
+          "train_samples": 852,
+          "test_samples": 214,
+          "accuracy": 0.986,
+          "precision": 0.9881,
+          "recall": 0.9765,
+          "f1_score": 0.9822,
+          "fit_time_seconds": 0.1864,
+          "predict_time_seconds": 0.0478
+        },
+        "negative": {
+          "train_samples": 852,
+          "test_samples": 214,
+          "accuracy": 0.9673,
+          "precision": 0.9759,
+          "recall": 0.9419,
+          "f1_score": 0.9586,
+          "fit_time_seconds": 0.1958,
+          "predict_time_seconds": 0.0442
+        }
+      }
+    },
+    {
+      "model": {
+        "name": "baseline_word_tfidf_logreg",
+        "description": "Baseline TF-IDF mots 1-2 grammes + LogisticRegression.",
+        "attempt": "baseline"
+      },
+      "aggregate": {
+        "accuracy": 0.9767,
+        "f1_score": 0.9703,
+        "fit_time_seconds": 0.0726,
+        "predict_time_seconds": 0.0096
+      },
+      "labels": {
+        "positive": {
+          "train_samples": 852,
+          "test_samples": 214,
+          "accuracy": 0.9813,
+          "precision": 0.988,
+          "recall": 0.9647,
+          "f1_score": 0.9762,
+          "fit_time_seconds": 0.0427,
+          "predict_time_seconds": 0.005
+        },
+        "negative": {
+          "train_samples": 852,
+          "test_samples": 214,
+          "accuracy": 0.972,
+          "precision": 0.9878,
+          "recall": 0.9419,
+          "f1_score": 0.9643,
+          "fit_time_seconds": 0.0299,
+          "predict_time_seconds": 0.0046
+        }
+      }
+    },
+    {
+      "model": {
+        "name": "tuned_word_tfidf_logreg",
+        "description": "Tentative 1: TF-IDF mots 1-3 grammes, accents normalisés, pondération sublinear_tf et C=1.5.",
+        "attempt": "tentative_1_tfidf"
+      },
+      "aggregate": {
+        "accuracy": 0.9743,
+        "f1_score": 0.9672,
+        "fit_time_seconds": 0.0892,
+        "predict_time_seconds": 0.0172
+      },
+      "labels": {
+        "positive": {
+          "train_samples": 852,
+          "test_samples": 214,
+          "accuracy": 0.9766,
+          "precision": 0.9878,
+          "recall": 0.9529,
+          "f1_score": 0.9701,
+          "fit_time_seconds": 0.0434,
+          "predict_time_seconds": 0.009
+        },
+        "negative": {
+          "train_samples": 852,
+          "test_samples": 214,
+          "accuracy": 0.972,
+          "precision": 0.9878,
+          "recall": 0.9419,
+          "f1_score": 0.9643,
+          "fit_time_seconds": 0.0458,
+          "predict_time_seconds": 0.0082
+        }
+      }
+    }
+  ]
+}
