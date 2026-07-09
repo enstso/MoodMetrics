@@ -5,6 +5,10 @@ mode="${1:-api}"
 
 python -m scripts.init_db
 
+if [ -f "${DATASET_PATH:-}" ]; then
+    python -m scripts.import_dataset
+fi
+
 if [ "$mode" = "api" ]; then
     if [ ! -f "$MODEL_PATH" ]; then
         python -m scripts.train_model

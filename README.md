@@ -16,9 +16,9 @@ MoodMetrics est une API Flask d'analyse de sentiments conforme au sujet fourni d
 docker compose up --build
 ```
 
-Cette commande démarre MySQL 8.4 avec un petit dataset initial, l'API sur `http://localhost:8000` et un service cron qui réentraîne le modèle chaque dimanche à 03:00.
+Cette commande démarre MySQL 8.4, importe le dataset `data/tweets.csv`, expose l'API sur `http://localhost:8000` et lance un service cron qui réentraîne le modèle chaque dimanche à 03:00.
 
-Au premier démarrage, l'API entraîne automatiquement un modèle si aucun artefact n'existe. Les volumes `mysql_data` et `model_data` conservent les annotations et le modèle.
+Au premier démarrage, l'API entraîne automatiquement un modèle si aucun artefact n'existe. L'import du dataset ajoute uniquement les tweets absents afin de préserver les annotations déjà stockées. Les volumes `mysql_data` et `model_data` conservent les annotations et le modèle.
 
 ## API cible
 
@@ -62,5 +62,6 @@ Pour créer le schéma puis réentraîner manuellement le modèle :
 
 ```bash
 python -m scripts.init_db
+python -m scripts.import_dataset
 python -m scripts.train_model
 ```

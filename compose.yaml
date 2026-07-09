@@ -21,6 +21,7 @@ services:
     build: .
     environment: &app-environment
       DATABASE_URL: mysql+pymysql://moodmetrics:moodmetrics@db:3306/moodmetrics
+      DATASET_PATH: /app/data/tweets.csv
       MODEL_PATH: /app/artifacts/sentiment_model.joblib
     ports:
       - "8000:8000"

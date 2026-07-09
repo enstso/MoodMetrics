@@ -12,6 +12,7 @@ RUN apt-get update \
 COPY pyproject.toml README.md ./
 COPY moodmetrics ./moodmetrics
 COPY scripts ./scripts
+COPY data ./data
 RUN pip install --no-cache-dir .
 
 RUN chmod +x scripts/docker-entrypoint.sh
