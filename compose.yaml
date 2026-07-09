@@ -22,11 +22,14 @@ services:
     environment: &app-environment
       DATABASE_URL: mysql+pymysql://moodmetrics:moodmetrics@db:3306/moodmetrics
       DATASET_PATH: /app/data/tweets.csv
+      EVALUATION_PATH: /app/reports/evaluation.json
       MODEL_PATH: /app/artifacts/sentiment_model.joblib
+      REPORT_PATH: /app/reports/evaluation_report.pdf
     ports:
       - "8000:8000"
     volumes:
       - model_data:/app/artifacts
+      - report_data:/app/reports
     depends_on:
       db:
         condition: service_healthy
@@ -37,6 +40,7 @@ services:
     environment: *app-environment
     volumes:
       - model_data:/app/artifacts
+      - report_data:/app/reports
     depends_on:
       db:
         condition: service_healthy
@@ -44,3 +48,4 @@ services:
 volumes:
   mysql_data:
   model_data:
+  report_data:

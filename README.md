@@ -65,3 +65,10 @@ python -m scripts.init_db
 python -m scripts.import_dataset
 python -m scripts.train_model
 ```
+
+Pour générer les métriques d'évaluation et le rapport PDF :
+
+```bash
+python -m scripts.evaluate_model
+python -m scripts.generate_report
+```

@@ -17,8 +17,8 @@ if [ "$mode" = "api" ]; then
 fi
 
 if [ "$mode" = "trainer" ]; then
-    printenv | grep -E '^(DATABASE_URL|MODEL_PATH)=' > /etc/environment
-    echo '0 3 * * 0 root . /etc/environment; cd /app && python -m scripts.train_model >> /proc/1/fd/1 2>> /proc/1/fd/2' > /etc/cron.d/moodmetrics
+    printenv | grep -E '^(DATABASE_URL|DATASET_PATH|EVALUATION_PATH|MODEL_PATH|REPORT_PATH)=' > /etc/environment
+    echo '0 3 * * 0 root . /etc/environment; cd /app && { python -m scripts.import_dataset && python -m scripts.train_model && python -m scripts.evaluate_model && python -m scripts.generate_report; } >> /proc/1/fd/1 2>> /proc/1/fd/2' > /etc/cron.d/moodmetrics
     chmod 0644 /etc/cron.d/moodmetrics
     exec cron -f
 fi
