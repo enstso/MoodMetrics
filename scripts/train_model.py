@@ -14,7 +14,7 @@ def train_classifier(texts: list[str], labels: list[bool], model_name: str | Non
     return model.fit(texts, labels)
 
 
-def train_from_database(database_url: str, model_path: str):
+def train_from_database(database_url: str, model_path: str, model_name: str | None = None):
     session_factory, _ = create_session_factory(database_url)
     with session_factory() as session:
         tweets = session.query(Tweet).order_by(Tweet.id).all()
@@ -23,9 +23,11 @@ def train_from_database(database_url: str, model_path: str):
         raise ValueError("Au moins quatre tweets annotés sont nécessaires.")
 
     texts = [tweet.text for tweet in tweets]
+    spec = get_model_spec(model_name)
     models = {
-        "positive": train_classifier(texts, [tweet.positive for tweet in tweets]),
-        "negative": train_classifier(texts, [tweet.negative for tweet in tweets]),
+        "metadata": {"model": spec.to_metadata(), "samples": len(tweets)},
+        "positive": train_classifier(texts, [tweet.positive for tweet in tweets], spec.name),
+        "negative": train_classifier(texts, [tweet.negative for tweet in tweets], spec.name),
     }
     destination = Path(model_path)
     destination.parent.mkdir(parents=True, exist_ok=True)

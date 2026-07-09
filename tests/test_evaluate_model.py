@@ -46,6 +46,7 @@ def test_evaluate_from_database_writes_metrics(tmp_path):
     saved_evaluation = json.loads(output_path.read_text(encoding="utf-8"))
 
     assert evaluation["samples"] == 36
+    assert saved_evaluation["model"]["name"] == "hybrid_char_word_tfidf_logreg"
     assert saved_evaluation["labels"]["positive"]["test_samples"] == 11
     assert saved_evaluation["labels"]["negative"]["confusion_matrix"]["labels"] == [
         "absent",

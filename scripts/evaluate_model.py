@@ -18,6 +18,7 @@ from sklearn.model_selection import train_test_split
 from moodmetrics.config import Config
 from moodmetrics.database import Tweet, create_session_factory
 from moodmetrics.datasets import read_tweet_rows
+from moodmetrics.modeling import get_model_spec
 from scripts.train_model import train_classifier
 
 
@@ -140,6 +141,7 @@ def evaluate_classifier(
     labels: list[bool],
     test_size: float = 0.2,
     random_state: int = 42,
+    model_name: str | None = None,
 ) -> dict[str, object]:
     if len(set(labels)) < 2:
         raise ValueError("Chaque label doit contenir au moins deux classes.")
@@ -151,7 +153,7 @@ def evaluate_classifier(
         random_state=random_state,
         stratify=stratify_if_possible(labels),
     )
-    model = train_classifier(train_texts, train_labels)
+    model = train_classifier(train_texts, train_labels, model_name)
     predictions = model.predict(test_texts)
     precision, recall, f1_score, _ = precision_recall_fscore_support(
         test_labels,
@@ -256,6 +258,7 @@ def evaluate_from_database(
     random_state: int = 42,
     figures_dir: str | None = None,
     supplementary_path: str | None = None,
+    model_name: str | None = None,
 ) -> dict[str, object]:
     texts, positives, negatives, stats = build_evaluation_pool(
         database_url, supplementary_path
@@ -269,12 +272,14 @@ def evaluate_from_database(
 
     columns = {"positive": positives, "negative": negatives}
     labels: dict[str, object] = {}
+    spec = get_model_spec(model_name)
     for key in ("positive", "negative"):
         metrics = evaluate_classifier(
             texts,
             columns[key],
             test_size=test_size,
             random_state=random_state,
+            model_name=spec.name,
         )
         figure_path = render_confusion_matrix_png(
             metrics["confusion_matrix"]["values"],
@@ -289,6 +294,7 @@ def evaluate_from_database(
         "samples": len(texts),
         "test_size": test_size,
         "random_state": random_state,
+        "model": spec.to_metadata(),
         "dataset": assess_dataset(positives, negatives, stats),
         "labels": labels,
     }

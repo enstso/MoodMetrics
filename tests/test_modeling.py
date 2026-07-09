@@ -1,15 +1,22 @@
 from moodmetrics.modeling import (
     BASELINE_MODEL_NAME,
     HYBRID_CHAR_WORD_MODEL_NAME,
+    OPTIMAL_MODEL_NAME,
     get_model_spec,
     iter_model_specs,
 )
 
 
-def test_get_model_spec_returns_baseline_by_default():
+def test_get_model_spec_returns_optimal_by_default():
     spec = get_model_spec()
 
-    assert spec.name == BASELINE_MODEL_NAME
+    assert spec.name == OPTIMAL_MODEL_NAME == HYBRID_CHAR_WORD_MODEL_NAME
+    assert spec.to_metadata()["attempt"] == "tentative_2_hybrid_features"
+
+
+def test_baseline_model_spec_is_still_available():
+    spec = get_model_spec(BASELINE_MODEL_NAME)
+
     assert spec.to_metadata()["attempt"] == "baseline"
 
 

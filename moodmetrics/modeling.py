@@ -24,7 +24,7 @@ class ModelSpec:
 BASELINE_MODEL_NAME = "baseline_word_tfidf_logreg"
 TUNED_WORD_MODEL_NAME = "tuned_word_tfidf_logreg"
 HYBRID_CHAR_WORD_MODEL_NAME = "hybrid_char_word_tfidf_logreg"
-OPTIMAL_MODEL_NAME = BASELINE_MODEL_NAME
+OPTIMAL_MODEL_NAME = HYBRID_CHAR_WORD_MODEL_NAME
 
 
 def build_baseline_word_tfidf_logreg() -> Pipeline:
