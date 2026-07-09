@@ -1,0 +1,98 @@
+{
+  "samples": 1066,
+  "test_size": 0.2,
+  "random_state": 42,
+  "dataset": {
+    "samples": 1066,
+    "positive": 425,
+    "negative": 428,
+    "neutral": 213,
+    "sufficient": true,
+    "database_rows": 2000,
+    "duplicates_removed": 1000,
+    "supplement_added": 66,
+    "note": "Le jeu de données est suffisamment volumineux pour une évaluation crédible."
+  },
+  "labels": {
+    "positive": {
+      "train_samples": 852,
+      "test_samples": 214,
+      "accuracy": 0.9813,
+      "precision": 0.988,
+      "recall": 0.9647,
+      "f1_score": 0.9762,
+      "per_class": {
+        "absent": {
+          "precision": 0.9771,
+          "recall": 0.9922,
+          "f1_score": 0.9846,
+          "support": 129
+        },
+        "present": {
+          "precision": 0.988,
+          "recall": 0.9647,
+          "f1_score": 0.9762,
+          "support": 85
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "absent",
+          "present"
+        ],
+        "values": [
+          [
+            128,
+            1
+          ],
+          [
+            3,
+            82
+          ]
+        ]
+      },
+      "warnings": [],
+      "figure": "confusion_matrix_positive.png"
+    },
+    "negative": {
+      "train_samples": 852,
+      "test_samples": 214,
+      "accuracy": 0.972,
+      "precision": 0.9878,
+      "recall": 0.9419,
+      "f1_score": 0.9643,
+      "per_class": {
+        "absent": {
+          "precision": 0.9621,
+          "recall": 0.9922,
+          "f1_score": 0.9769,
+          "support": 128
+        },
+        "present": {
+          "precision": 0.9878,
+          "recall": 0.9419,
+          "f1_score": 0.9643,
+          "support": 86
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "absent",
+          "present"
+        ],
+        "values": [
+          [
+            127,
+            1
+          ],
+          [
+            5,
+            81
+          ]
+        ]
+      },
+      "warnings": [],
+      "figure": "confusion_matrix_negative.png"
+    }
+  }
+}
