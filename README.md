@@ -18,7 +18,7 @@ docker compose up --build
 
 Cette commande démarre MySQL 8.4, importe le dataset `data/tweets.csv`, expose l'API sur `http://localhost:8000` et lance un service cron qui réentraîne le modèle chaque dimanche à 03:00.
 
-Au premier démarrage, l'API entraîne automatiquement un modèle si aucun artefact n'existe. L'import du dataset ajoute uniquement les tweets absents afin de préserver les annotations déjà stockées. Les volumes `mysql_data` et `model_data` conservent les annotations et le modèle.
+Au premier démarrage, l'API entraîne automatiquement un modèle si aucun artefact n'existe, puis génère les métriques et le rapport PDF si les fichiers de rapport sont absents. L'import du dataset ajoute uniquement les tweets absents afin de préserver les annotations déjà stockées. Les volumes `mysql_data`, `model_data` et `report_data` conservent les annotations, le modèle et les livrables d'évaluation.
 
 ## API
 
