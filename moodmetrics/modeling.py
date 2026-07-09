@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.pipeline import FeatureUnion, Pipeline, make_pipeline
 
 
 @dataclass(frozen=True)
@@ -23,6 +23,7 @@ class ModelSpec:
 
 BASELINE_MODEL_NAME = "baseline_word_tfidf_logreg"
 TUNED_WORD_MODEL_NAME = "tuned_word_tfidf_logreg"
+HYBRID_CHAR_WORD_MODEL_NAME = "hybrid_char_word_tfidf_logreg"
 OPTIMAL_MODEL_NAME = BASELINE_MODEL_NAME
 
 
@@ -52,6 +53,50 @@ def build_tuned_word_tfidf_logreg() -> Pipeline:
     )
 
 
+def build_hybrid_char_word_tfidf_logreg() -> Pipeline:
+    features = FeatureUnion(
+        [
+            (
+                "word",
+                TfidfVectorizer(
+                    analyzer="word",
+                    ngram_range=(1, 2),
+                    min_df=1,
+                    max_df=0.95,
+                    strip_accents="unicode",
+                    sublinear_tf=True,
+                    max_features=25_000,
+                ),
+            ),
+            (
+                "char",
+                TfidfVectorizer(
+                    analyzer="char_wb",
+                    ngram_range=(3, 5),
+                    min_df=2,
+                    strip_accents="unicode",
+                    sublinear_tf=True,
+                    max_features=20_000,
+                ),
+            ),
+        ]
+    )
+    return Pipeline(
+        [
+            ("features", features),
+            (
+                "classifier",
+                LogisticRegression(
+                    max_iter=2_500,
+                    class_weight="balanced",
+                    C=2.0,
+                    solver="liblinear",
+                ),
+            ),
+        ]
+    )
+
+
 MODEL_SPECS: dict[str, ModelSpec] = {
     BASELINE_MODEL_NAME: ModelSpec(
         name=BASELINE_MODEL_NAME,
@@ -67,6 +112,15 @@ MODEL_SPECS: dict[str, ModelSpec] = {
         ),
         attempt="tentative_1_tfidf",
         build=build_tuned_word_tfidf_logreg,
+    ),
+    HYBRID_CHAR_WORD_MODEL_NAME: ModelSpec(
+        name=HYBRID_CHAR_WORD_MODEL_NAME,
+        description=(
+            "Tentative 2: union TF-IDF mots + char_wb 3-5 grammes pour mieux "
+            "capturer fautes, hashtags, emojis et variations courtes."
+        ),
+        attempt="tentative_2_hybrid_features",
+        build=build_hybrid_char_word_tfidf_logreg,
     ),
 }
 

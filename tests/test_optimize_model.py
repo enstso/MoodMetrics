@@ -33,5 +33,5 @@ def test_optimize_from_database_ranks_candidates(tmp_path):
 
     assert output_path.exists()
     assert optimization["samples"] == 30
-    assert len(optimization["attempts"]) >= 2
+    assert len(optimization["attempts"]) >= 3
     assert "f1_score" in optimization["attempts"][0]["aggregate"]

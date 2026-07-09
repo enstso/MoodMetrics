@@ -1,4 +1,9 @@
-from moodmetrics.modeling import BASELINE_MODEL_NAME, get_model_spec, iter_model_specs
+from moodmetrics.modeling import (
+    BASELINE_MODEL_NAME,
+    HYBRID_CHAR_WORD_MODEL_NAME,
+    get_model_spec,
+    iter_model_specs,
+)
 
 
 def test_get_model_spec_returns_baseline_by_default():
@@ -17,3 +22,9 @@ def test_model_specs_build_predict_proba_pipeline():
 
         assert hasattr(model, "predict_proba")
         assert model.predict(["excellent"]).tolist() == [True]
+
+
+def test_hybrid_model_spec_is_registered():
+    spec = get_model_spec(HYBRID_CHAR_WORD_MODEL_NAME)
+
+    assert spec.attempt == "tentative_2_hybrid_features"
