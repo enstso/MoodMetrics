@@ -72,3 +72,7 @@ Pour générer les métriques d'évaluation et le rapport PDF :
 python -m scripts.evaluate_model
 python -m scripts.generate_report
 ```
+
+## Qualité continue
+
+Le workflow GitHub Actions exécute les tests Python, valide `compose.yaml` et construit l'image Docker de l'API à chaque push sur `main` et à chaque pull request.
