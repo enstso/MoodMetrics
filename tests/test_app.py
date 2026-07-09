@@ -41,3 +41,34 @@ def test_accepts_raw_array(client):
     assert response.status_code == 200
     assert response.get_json() == {"Très bien": 0.5}
 
+
+def test_model_metrics_returns_evaluation_payload(tmp_path):
+    evaluation_path = tmp_path / "evaluation.json"
+    evaluation_path.write_text(
+        '{"samples": 12, "labels": {"positive": {"accuracy": 0.9}}}',
+        encoding="utf-8",
+    )
+    app = create_app(
+        {"TESTING": True, "EVALUATION_PATH": str(evaluation_path)},
+        analyzer=FakeAnalyzer(),
+    )
+
+    response = app.test_client().get("/api/v1/model/metrics")
+
+    assert response.status_code == 200
+    assert response.get_json() == {
+        "samples": 12,
+        "labels": {"positive": {"accuracy": 0.9}},
+    }
+
+
+def test_model_metrics_returns_503_when_missing(tmp_path):
+    app = create_app(
+        {"TESTING": True, "EVALUATION_PATH": str(tmp_path / "missing.json")},
+        analyzer=FakeAnalyzer(),
+    )
+
+    response = app.test_client().get("/api/v1/model/metrics")
+
+    assert response.status_code == 503
+    assert "error" in response.get_json()

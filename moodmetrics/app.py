@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 from flask import Flask, current_app, jsonify, request
 
 from moodmetrics.config import Config
@@ -37,8 +40,20 @@ def create_app(config: dict | None = None, analyzer=None) -> Flask:
 
         return jsonify(result)
 
+    @app.get("/api/v1/model/metrics")
+    def model_metrics():
+        evaluation_path = Path(current_app.config["EVALUATION_PATH"])
+        if not evaluation_path.exists():
+            return jsonify(error="Les métriques du modèle ne sont pas encore générées."), 503
+
+        try:
+            metrics = json.loads(evaluation_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            return jsonify(error="Le fichier de métriques du modèle est invalide."), 500
+
+        return jsonify(metrics)
+
     return app
 
 
 app = create_app()
-

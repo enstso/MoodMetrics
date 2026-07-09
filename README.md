@@ -68,6 +68,16 @@ Réponse attendue (les scores exacts dépendent du modèle entraîné) :
   (corps `{"error": "..."}`).
 - Si aucun modèle n'est encore entraîné → `503 Service Unavailable` avec un message explicite.
 
+### `GET /api/v1/model/metrics`
+
+Expose les dernières métriques d'évaluation générées depuis `reports/evaluation.json` :
+
+```bash
+curl http://localhost:8000/api/v1/model/metrics
+```
+
+Si l'évaluation n'a pas encore été générée, l'API renvoie `503 Service Unavailable`.
+
 ## Développement local
 
 ```bash
